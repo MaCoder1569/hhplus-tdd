@@ -3,12 +3,10 @@ package io.hhplus.tdd.point.infrastructure;
 import io.hhplus.tdd.database.UserPointTable;
 import io.hhplus.tdd.point.domain.UserPoint;
 import io.hhplus.tdd.point.domain.UserPointRepository;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("사용자 포인트 이력 메모리 리포지토리 테스트")
 class MemoryUserPointRepositoryTest {
     UserPointRepository userPointRepository = new MemoryUserPointRepository(new UserPointTable());
 

@@ -41,7 +41,7 @@ class PointControllerTest {
         // given
         long userId = 2L;
         long amount = 100;
-        UserPoint userPoint = pointService.saveUserPoint(userId, amount);
+        UserPoint userPoint = pointService.charge(userId, amount);
 
         // when & then
         mockMvc.perform(get("/point/{id}", userId))
@@ -53,7 +53,7 @@ class PointControllerTest {
     @Test
     void 오류_유저_포인트_조회() throws Exception {
         // given
-        long userId = -1L;
+        long userId = -3L;
 
         // when & then
         mockMvc.perform(get("/point/{id}", userId))
@@ -61,9 +61,9 @@ class PointControllerTest {
     }
 
     @Test
-    void 유저_포인트_내역_조회() throws Exception {
+    void 미등록_유저_포인트_내역_조회() throws Exception {
         // given
-        long userId = 0L;
+        long userId = 4L;
 
         // when & then
         mockMvc.perform(get("/point/{id}/histories", userId))
@@ -72,10 +72,41 @@ class PointControllerTest {
     }
 
     @Test
+    void 등록_유저_포인트_내역_조회() throws Exception {
+        // given
+        long userId = 5L;
+        long amount = 100;
+
+        //when
+        pointService.charge(userId, amount);
+
+        // when & then
+        mockMvc.perform(get("/point/{id}/histories", userId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    void 등록_유저_포인트_내역_조회2() throws Exception {
+        // given
+        long userId = 6L;
+        long amount = 100;
+
+        //when
+        pointService.charge(userId, amount);
+        pointService.use(userId, amount);
+
+        // when & then
+        mockMvc.perform(get("/point/{id}/histories", userId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
+    }
+
+    @Test
     void 유저_포인트_충전() throws Exception {
         // given
-        long userId = 0L;
-        long amount = 0;
+        long userId = 7L;
+        long amount = 100;
 
         // when & then
         mockMvc.perform(patch("/point/{id}/charge", userId)
@@ -88,10 +119,26 @@ class PointControllerTest {
     }
 
     @Test
-    void 유저_포인트_사용() throws Exception {
+    void 미등록_유저_포인트_사용() throws Exception {
         // given
-        long userId = 0L;
-        long amount = 0;
+        long userId = 8L;
+        long amount = 100;
+
+        // when & then
+        mockMvc.perform(patch("/point/{id}/use", userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.valueOf(amount)))  // body에 숫자 그대로 넣기
+                .andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    void 등록_유저_포인트_사용() throws Exception {
+        // given
+        long userId = 9L;
+        long amount = 100;
+
+        //when
+        pointService.charge(userId, amount);
 
         // when & then
         mockMvc.perform(patch("/point/{id}/use", userId)
@@ -99,7 +146,7 @@ class PointControllerTest {
                         .content(String.valueOf(amount)))  // body에 숫자 그대로 넣기
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(userId))
-                .andExpect(jsonPath("$.point").value(amount))
+                .andExpect(jsonPath("$.point").value(0))
                 .andExpect(jsonPath("$.updateMillis").isNumber());
     }
 }

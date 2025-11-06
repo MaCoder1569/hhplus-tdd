@@ -36,8 +36,8 @@ public class PointController {
     @GetMapping("{id}/histories")
     public ResponseEntity<List<PointHistory>> history(
             @PathVariable long id
-    ) {
-        return ResponseEntity.ok(List.of());
+    ) throws Exception {
+        return ResponseEntity.ok(pointService.getPointHistories(id));
     }
 
     /**
@@ -47,8 +47,8 @@ public class PointController {
     public ResponseEntity<UserPoint> charge(
             @PathVariable long id,
             @RequestBody long amount
-    ) {
-        return ResponseEntity.ok(new UserPoint(0, 0, 0));
+    ) throws Exception {
+        return ResponseEntity.ok(pointService.charge(id, amount));
     }
 
     /**
@@ -58,7 +58,8 @@ public class PointController {
     public ResponseEntity<UserPoint> use(
             @PathVariable long id,
             @RequestBody long amount
-    ) {
-        return ResponseEntity.ok(new UserPoint(0, 0, 0));
+    ) throws Exception {
+        return ResponseEntity.ok(pointService.use(id, amount));
     }
+
 }

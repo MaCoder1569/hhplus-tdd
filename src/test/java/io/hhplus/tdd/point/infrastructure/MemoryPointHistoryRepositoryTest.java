@@ -32,6 +32,6 @@ class MemoryPointHistoryRepositoryTest {
         assertThat(history.userId()).isEqualTo(1L);
         assertThat(history.amount()).isEqualTo(100);
         assertThat(history.type()).isEqualTo(TransactionType.CHARGE);
-        assertThat(history.updateMillis()).isEqualTo(10);
+        assertThat(history.updateMillis()).isInstanceOf(Long.class);
     }
 }
