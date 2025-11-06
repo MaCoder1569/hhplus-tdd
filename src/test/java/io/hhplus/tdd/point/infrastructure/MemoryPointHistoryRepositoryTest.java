@@ -26,7 +26,7 @@ class MemoryPointHistoryRepositoryTest {
     @Test
     void 히스토리_추가(){
         //given & when
-        PointHistory history = pointHistoryRepository.insert(1L, 100, TransactionType.CHARGE, 10);
+        PointHistory history = pointHistoryRepository.insert(1L, 100, TransactionType.CHARGE);
 
         //then
         assertThat(history.userId()).isEqualTo(1L);

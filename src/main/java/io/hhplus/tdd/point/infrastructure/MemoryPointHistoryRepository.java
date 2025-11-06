@@ -20,7 +20,7 @@ public class MemoryPointHistoryRepository implements PointHistoryRepository {
     }
 
     @Override
-    public PointHistory insert(long userId, long amount, TransactionType type, long updateMillis) {
-        return pointHistoryTable.insert(userId, amount, type, updateMillis);
+    public PointHistory insert(long userId, long amount, TransactionType type) {
+        return pointHistoryTable.insert(userId, amount, type, System.currentTimeMillis());
     }
 }
