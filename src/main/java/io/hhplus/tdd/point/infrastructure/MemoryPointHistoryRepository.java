@@ -5,9 +5,11 @@ import io.hhplus.tdd.point.domain.PointHistory;
 import io.hhplus.tdd.point.domain.PointHistoryRepository;
 import io.hhplus.tdd.point.domain.TransactionType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 @RequiredArgsConstructor
 public class MemoryPointHistoryRepository implements PointHistoryRepository {
     private final PointHistoryTable pointHistoryTable;
